@@ -1,24 +1,17 @@
 # run_tests.gd
 extends SceneTree
 
-# Используем абсолютные пути для запуска через -s
-const CardData = preload("C:/Users/06775/OneDrive/Документы/ai-test/Card_TD/scripts/data/card_data.gd")
-const CardEffect = preload("C:/Users/06775/OneDrive/Документы/ai-test/Card_TD/scripts/data/card_effect.gd")
-const CastleGrid = preload("C:/Users/06775/OneDrive/Документы/ai-test/Card_TD/scripts/castle/castle_grid.gd")
-const Block = preload("C:/Users/06775/OneDrive/Документы/ai-test/Card_TD/scripts/castle/block.gd")
-const LoadSolver = preload("C:/Users/06775/OneDrive/Документы/ai-test/Card_TD/scripts/castle/load_solver.gd")
-
 var failures = 0
 
 func _init():
-	print("Starting Logic Tests (Absolute Paths Mode)...")
+	print("Starting Logic Tests...")
 	run_test_1()
 	run_test_2()
 	run_test_3()
 	run_test_4()
 	print("\n----------------------------")
 	print("Tests finished. Failures: ", failures)
-	quit()
+	quit(failures)
 
 func run_test_1():
 	print("\nTest 1: Overload")
@@ -27,8 +20,8 @@ func run_test_1():
 	var low_card = load_card("low_card")
 	var face_card = load_card("face_card")
 	var b1 = grid.add_block(low_card, Vector2i(0, 0), 0)
-	var b2 = grid.add_block(face_card, Vector2i(0, 1), 0)
-	var b3 = grid.add_block(face_card, Vector2i(0, 2), 0)
+	var b2 = grid.add_block(face_card, Vector2i(0, 2), 0)
+	var b3 = grid.add_block(face_card, Vector2i(0, 4), 0)
 	var states = solver.solve(grid)
 	var s1 = states[b1]
 	if abs(s1.load_from_above - 6.0) > 0.1 or abs(s1.overload - 2.0) > 0.1 or abs(s1.effective_max_hp - 4.0) > 0.1:
@@ -44,8 +37,8 @@ func run_test_2():
 	var low_card = load_card("low_card")
 	var face_card = load_card("face_card")
 	var b1 = grid.add_block(low_card, Vector2i(0, 0), 0)
-	var b2 = grid.add_block(face_card, Vector2i(0, 1), 0)
-	var b3 = grid.add_block(face_card, Vector2i(0, 2), 0)
+	var b2 = grid.add_block(face_card, Vector2i(0, 2), 0)
+	var b3 = grid.add_block(face_card, Vector2i(0, 4), 0)
 	grid.remove_block(b2)
 	var states = solver.solve(grid)
 	var s1 = states[b1]
@@ -87,7 +80,7 @@ func run_test_4():
 	bonus.amount = 6.0
 	buttress.effects.append(bonus)
 	var b1 = grid.add_block(low_card, Vector2i(0, 0), 0)
-	var b2 = grid.add_block(buttress, Vector2i(0, 1), 0)
+	var b2 = grid.add_block(buttress, Vector2i(0, 2), 0)
 	var states = solver.solve(grid)
 	var s1 = states[b1]
 	if abs(s1.effective_capacity - 10.0) > 0.1:
