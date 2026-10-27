@@ -1,5 +1,6 @@
 # game_config.gd
-extends Node
+extends RefCounted
+class_name GameConfig
 
 # Сетка
 const GRID_W = 16
